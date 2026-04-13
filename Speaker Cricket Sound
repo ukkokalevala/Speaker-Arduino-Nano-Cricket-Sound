@@ -1,0 +1,48 @@
+int speakerPin = 9;
+int ldrPin = A0;
+
+int lightThreshold = 500;
+
+void setup() {
+  pinMode(speakerPin, OUTPUT);
+  randomSeed(analogRead(0));
+}
+
+void loop() {
+  int lightLevel = analogRead(ldrPin);
+
+  if (lightLevel < lightThreshold) {
+    cricketTrue();
+    delay(random(2000, 4000)); // gap between groups
+  } else {
+    noTone(speakerPin);
+    delay(500);
+  }
+}
+
+// =========================
+// TRUE CRICKET STRUCTURE
+// =========================
+void cricketTrue() {
+
+  int baseFreq = 4200;
+
+  int chirps = random(6, 10); // number of chirps in group
+
+  for (int c = 0; c < chirps; c++) {
+
+    // ONE chirp = burst of micro pulses
+    for (int i = 0; i < 25; i++) {
+
+      tone(speakerPin, baseFreq);
+
+      delayMicroseconds(150);   // ON
+      noTone(speakerPin);
+      delayMicroseconds(100);   // OFF
+    }
+
+    noTone(speakerPin);
+
+    delay(random(20, 60)); // gap between chirps (important!)
+  }
+}
